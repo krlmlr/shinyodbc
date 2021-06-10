@@ -15,7 +15,7 @@ shinyServer(function(input, output) {
   data_sources <- odbc::odbcListDataSources()
 
   output$driver_input <- renderUI(selectizeInput(
-    "driver", "Driver", choices = c(drivers$name)
+    "driver", "Driver", choices = c("", drivers$name)
   ))
 
   output$data_source_input <- renderUI(selectizeInput(
@@ -37,14 +37,21 @@ shinyServer(function(input, output) {
     connect_call()
     ""
   })
+
+  output$connection <- renderPrint({
+    # Trigger
+    req(input$connect)
+
+    # Side effect
+    connect(isolate(connect_call()))
+  })
 })
 
 get_call_text <- function(driver, data_source, extra_args) {
-  if (driver == "") stop("Please select a driver.")
   paste0(
     "DBI::dbConnect(",
-    ",\n  odbc::odbc()",
-    ',\n  drv = "', driver, '"',
+    "\n  odbc::odbc()",
+    if (driver != "") paste0(',\n  driver = "', driver, '"'),
     if (data_source != "") paste0(',\n  dsn = "', data_source, '"'),
     if (extra_args != "") paste0(",\n  ", gsub("\n", "\n  ", extra_args)),
     "\n)"
@@ -54,4 +61,8 @@ get_call_text <- function(driver, data_source, extra_args) {
 get_call <- function(text) {
   req(text)
   parse(text = text)
+}
+
+connect <- function(call) {
+  eval(req(call))
 }

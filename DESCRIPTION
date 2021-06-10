@@ -1,5 +1,5 @@
 Package: shinyodbc
-Title: What the Package Does (One Line, Title Case)
+Title: Shiny app to test ODBC connections
 Version: 0.0.0.9000
 Date: 2021-06-10
 Authors@R: 

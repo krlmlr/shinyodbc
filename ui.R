@@ -23,7 +23,8 @@ shinyUI(fluidPage(
       verbatimTextOutput("connect_call"),
       textOutput("connect_call_ok"),
       actionButton("connect", "Connect"),
-      actionButton("disconnect", "Disconnect")
+      actionButton("disconnect", "Disconnect"),
+      verbatimTextOutput("connection")
     ),
 
     # Show a plot of the generated distribution
