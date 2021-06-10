@@ -13,22 +13,29 @@ library(shiny)
 shinyUI(fluidPage(
 
   # Application title
-  titlePanel("Old Faithful Geyser Data"),
+  titlePanel("ODBC connectivity test"),
 
-  # Sidebar with a slider input for number of bins
   sidebarLayout(
     sidebarPanel(
-      sliderInput("bins",
-        "Number of bins:",
-        min = 1,
-        max = 50,
-        value = 30
-      )
+      uiOutput("driver_input"),
+      uiOutput("data_source_input"),
+      textAreaInput("extra_args", "Additional arguments"),
+      verbatimTextOutput("connect_call"),
+      textOutput("connect_call_ok"),
+      actionButton("connect", "Connect"),
+      actionButton("disconnect", "Disconnect")
     ),
 
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot")
+      tabsetPanel(
+        tabPanel("Drivers",
+          DT::dataTableOutput("drivers")
+        ),
+        tabPanel("Data sources",
+          DT::dataTableOutput("data_sources")
+        )
+      )
     )
   )
 ))
