@@ -1,2 +1,4 @@
+^renv$
+^renv\.lock$
 ^shinyodbc\.Rproj$
 ^\.Rproj\.user$
